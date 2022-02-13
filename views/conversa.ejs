@@ -1,0 +1,84 @@
+<html>
+<head>
+    <%- include('./partials/head') %>
+    <title><%= info[0].nome  %></title>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-4">
+                <div class="jumbotron">
+                    <div class="row mb-5" style="margin-top: -30px;">
+                        <button class="btn btn-warning col-2" onclick="goBack()"><i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i></button>
+                        <a href="/app/porfile" class="btn btn-info col-10"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                    </div>
+
+                    <div class="img-fluid">
+                        <img src="<%= info[0].imagem  %>"  alt="" class="rounded img-fluid">
+                        <div class="profile">
+
+                            <div class="dropdown">
+                                <a class="btn btn-warning" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Alterar foto
+                                    <!-- <i class="fa fa-plus fa-1x" aria-hidden="true"></i> <i class="fa fa-comments fa-2x" aria-hidden="true"></i> -->
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <form style="padding: 20px; width: 300px" action="/app/#" method="post" enctype="multipart/form-data" >
+
+                                        <div class="form-group files">
+                                            <label for="newFoto">Escolha a sua foto</label>
+                                            <input type="file" id="newFoto" name="newFoto" class="form-control">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success btn-block">Avançar</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br>
+                    <h1 class="display-9"><%= info[0].nome  %></h1>
+                    <div class="row mt-5">
+                        <a href="/app/porfile" class="btn btn-primary btn-block">Pedir para entrar <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="jumbotron">
+                    <div class="line col-12">
+                        <h3>Membros</h3>
+                    </div>
+                    <% for(var i=0; i<info[0].users.length; ++i){ %>
+
+                        <% if(info[0].users[i].username == user[0].username){}else {%>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+
+                            <div class="box-part text-center">
+
+                                <i class="fa fa-user-circle-o fa-3x" aria-hidden="true" style="margin-bottom: 10px"></i>
+
+                                <div class="title">
+                                    <h4><%= info[0].users[i].username  %></h4>
+                                </div>
+                                <div class="tobottom">
+                                    <a href="/app/visit/<%= info[0].users[i].userId  %>" class="btn btn-info ">Visitar <i class="fa fa-eye"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    <% }} %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

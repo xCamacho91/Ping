@@ -1,0 +1,20 @@
+
+<% for(var i=0; i<publica.length; ++i){ %>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+
+        <div class="box-part text-center">
+            <div class="">
+                <img src="<%= publica[i].imagem  %>"  alt="" class="rounded img-fluid">
+            </div>
+
+            <div class="title">
+                <h4><%= publica[i].nome  %></h4>
+            </div>
+            <div class="tobottom">
+                <a href="/app/conversa/<%= publica[i]._id  %>" class="btn btn-info ">Aceder <i class="fa fa-plus"></i></a>
+            </div>
+
+        </div>
+    </div>
+
+<% } %>

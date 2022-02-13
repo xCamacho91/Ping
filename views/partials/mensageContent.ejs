@@ -1,0 +1,143 @@
+
+<script type="text/javascript" src="/js/messenger.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+      //  $("button").click(function() {
+            $(".chat-container").animate({
+                scrollTop: $(
+                    '.chat-container').get(0).scrollHeight
+            }, 2000);
+       // });
+    });
+
+
+    var mess;
+
+    $(document).ready(function(){
+        //Initialize the mess (messenger object) object
+        mess = messenger('<%= data.messengerRoute %>', '<%= data.textboxSelector %>', '<%= data.resultSelector %>');
+    });
+
+</script>
+
+<div class="set-right">
+    <div class="btn-group">
+
+        <%- include('../partials/polls/pollContent') %>
+
+        <div class="dropdown">
+            <a class="btn " href="#" role="button" id="dropdownMenuOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-plus-circle"></i> Opções
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                <a class="dropdown-item" href="#"><i class="fa fa-eye"></i> Participantes</a>
+
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#staticBackdrop"><i class="fa fa-check-square-o" aria-hidden="true"></i> Criar Votação </a><!-- Button trigger modal -->
+                <!--<button type="button" onclick="showNewPoll()" class="btn btn-secondary">Criar votação</button>
+                <button type="button" onclick="showNewPoll()" class="btn btn-secondary">Ver resultados recentes</button>-->
+            </div>
+        </div>
+
+
+        <div class="dropdown">
+
+        <a class="btn btn-success" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user-plus"></i> Adicionar
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"> <!-- Convidar pessoa para a conversa  -->
+            <form style="padding: 20px; width: 300px" action="/app/addUser" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="hidden" name="conversa" value="<%= locals.id %>">
+                    <label for="user">Utilizador a adicionar</label>
+                    <select class="form-control" id="user" name="selecao" required>
+                        <% if (locals.selecao){
+                            for(var i=0; i<selecao.length; ++i){
+                                if (selecao[i].username == user[0].username ){
+
+                                }else{%>
+
+                            <option value="<%= selecao[i]._id %>"><%= selecao[i].username %></option>
+                        <%}}}else{%>
+                        <option>Erro</option>
+                       <% }%>
+
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Adicionar</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="selected-user">
+    <span class="name"><%= locals.nome ? nome:'Login' %></span>
+</div>
+<div class="chat-container" id="message">
+    <button class="btn btn-down">Para baixo</button>
+    <div class="chat-box chatContainerScroll">
+        <% for(var c=0; c<conteudo.length; ++c){ // array das conversas
+
+        if (conteudo[c].username == user[0].username ){ // verifica se o username é o mesmo que o do utilizador da sessão
+
+        %>
+        <div class="chat-left">
+            <div class="chat-avatar">
+                <img src="<%= user[0].profilePhoto  %>"  alt="">
+                <div class="chat-name"><%= conteudo[c].username %></div>
+            </div>
+            <div class="chat-text"><%= conteudo[c].mensagem %></div>
+            <div class="chat-hour"><%= conteudo[c].dateTime %> <span class="fa fa-check-circle"></span></div>
+        </div>
+
+        <%
+        }else {
+
+            if(conteudo[c].indice == 1) { %>
+
+            <div class="text-center botchat">
+                <div class="chat-avatar">
+                    <div class="chat-name">PingBot</div>
+                </div>
+                <div class="chat-text"><%= conteudo[c].mensagem %></div>
+                <div class="chat-hour"><%= conteudo[c].dateTime %> <span class="fa fa-check-circle"></span></div>
+            </div>
+            <%
+            }else{ %>
+                <div class="chat-right">
+                    <div class="chat-hour"><%= conteudo[c].dateTime %> <span class="fa fa-check-circle"></span></div>
+                    <div class="chat-text">
+                        <div style=" position: absolute; top: 0; left: 0;">
+                            <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Responder</a>
+                                <a class="dropdown-item" href="#">Alguma coisa</a>
+                            </div>
+                        </div><%= conteudo[c].mensagem %></div>
+                    <div class="chat-avatar">
+                        <img src="https://www.bootdey.com/img/Content/avatar/avatar3.png" alt="Retail Admin">
+                        <div class="chat-name"><%= conteudo[c].username %></div>
+                    </div>
+                </div>
+
+            <%}}
+
+        }%>
+
+    </div>
+    <div  class="chat-box chatContainerScroll" id="result"></div> <!-- Mostra o conteudo escrito na textearea a baixo -->
+</div>
+<div class="mt-2 mb-0" >
+    <form action="" class="row form-group">
+        <div class="col-10">
+            <textarea class="form-control" rows="3" id="<%= data.textboxId %>" type="text" placeholder="<%= data.defaultMessage %>" style="resize:none"></textarea>
+        </div>
+        <div class="col-2">
+            <button type="reset" onclick="mess.message(mess)" class="btn btn-success btn-block" style="width: 100%; margin:12px 10px 12px -10px; padding: 20px 0px; "><i class="fa fa-paper-plane fa-lg" style="transform: rotate(50deg); "></i></button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,72 @@
+<html>
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-4">
+                <div class="jumbotron">
+                    <div class="row mb-5" style="margin-top: -30px;">
+
+                    </div>
+
+                    <div class="img-fluid">
+                        <div class="profile">
+
+                            <div class="dropdown">
+                                <a class="btn btn-warning" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Alterar foto
+                                    <!-- <i class="fa fa-plus fa-1x" aria-hidden="true"></i> <i class="fa fa-comments fa-2x" aria-hidden="true"></i> -->
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <form style="padding: 20px; width: 300px" action="/app/alterarfoto" method="post" enctype="multipart/form-data" >
+
+                                        <div class="form-group files">
+                                            <label for="newFoto">Escolha a sua foto</label>
+                                            <input type="file" id="newFoto" name="newFoto" class="form-control">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success btn-block">Avançar</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br>
+                    <h5 class="display-9"> </h5>
+                    <h1 class="display-9"> </h1>
+
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="jumbotron">
+                    <% for(var i=0; i<conv.length; ++i){ %>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+
+                            <div class="box-part text-center">
+
+                                <i class="fa fa-user-circle-o fa-3x" aria-hidden="true" style="margin-bottom: 10px"></i>
+
+                                <div class="title">
+                                    <h4><%= conv[i].username  %></h4>
+                                </div>
+                                <div class="tobottom">
+                                    <a href="/app/visit/<%= conv[i].userId  %>" class="btn btn-info ">Visitar <i class="fa fa-eye"></i></a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

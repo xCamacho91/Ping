@@ -1,0 +1,94 @@
+<!-- https://stackoverflow.com/questions/14853779/adding-input-elements-dynamically-to-form -->
+<script type='text/javascript'>
+    function addFields(){
+        // Number of inputs to create
+        var number = document.getElementById("optionNumber").value;
+        // Container <div> where dynamic content will be placed
+        var container = document.getElementById("optionsContainer");
+        // Clear previous contents of the container
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+
+
+
+        for (i=0;i<number;i++){
+
+            // Create an <input> element, set its type and name attributes
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "option" + (i+1);
+            input.className = "form-control item"
+            input.placeholder = "Opção "+ (i+1)
+            if(i==0) input.value="Sim"
+            if(i==1) input.value="Não"
+            if(i==2) input.value="Abstenção"
+            container.appendChild(input);
+            // Append a line break
+            container.appendChild(document.createElement("br"));
+        }
+
+        document.getElementById("optionsNumber").value = number
+
+    }
+
+</script>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nova votação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/app/novaVotacao/<%= locals.id %>" method="post">
+                 <div class="modal-body">
+
+                     <div class="form-group row">
+                         <label for="inputPassword" class="col-sm-3 col-form-label">Título:</label>
+                         <div class="col-sm-9">
+                             <input type="text" id="title" name="title" class="form-control item"/>
+                         </div>
+                     </div>
+
+                     <div class="form-group row">
+                         <label for="inputPassword" class="col-sm-3 col-form-label">Fim da votação:</label>
+                         <div class="col-sm-9">
+                             <input type="datetime-local" name="data_fecho" id="data_fecho" step="1" class="form-control" />
+                         </div>
+                     </div>
+
+                     <div class="form-group row">
+
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Número de opções:</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="text" id="optionNumber" name="optionNumber" class="form-control" >
+                                <div class="input-group-append">
+                                    <a href="#" id="filldetails" onclick="addFields()" class="btn btn-secondary">  OK</a>
+                                </div>
+                            </div>
+                        </div>
+
+                     </div>
+                    <div id="optionsContainer" class="form-group">
+                        <!-- Preenchida dinâmicamente com a função addFields-->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="optionsNumber" id="optionsNumber">           <!-- número de respostas para ser usado no ciclo for de addPoll -->
+                    <button type="submit" class="btn btn-success" id="vote"> Criar votação </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,54 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<link href="/public/css/style.css" rel="stylesheet">
+<link href="/public/css/bootstrap.css" rel="stylesheet">
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/main.js"></script>
+<script src="/public/js/bootstrap.js"></script>
+
+
+<style>
+</style>
+
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+
+    $(function() {
+        var $tabButtonItem = $('#tab-button li'),
+            $tabSelect = $('#tab-select'),
+            $tabContents = $('.tab-contents'),
+            activeClass = 'is-active';
+
+        $tabButtonItem.first().addClass(activeClass);
+        $tabContents.not(':first').hide();
+
+        $tabButtonItem.find('a').on('click', function(e) {
+            var target = $(this).attr('href');
+
+            $tabButtonItem.removeClass(activeClass);
+            $(this).parent().addClass(activeClass);
+            $tabSelect.val(target);
+            $tabContents.hide();
+            $(target).show();
+            e.preventDefault();
+        });
+
+        $tabSelect.on('change', function() {
+            var target = $(this).val(),
+                targetSelectNum = $(this).prop('selectedIndex');
+
+            $tabButtonItem.removeClass(activeClass);
+            $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+            $tabContents.hide();
+            $(target).show();
+        });
+    });
+
+</script>

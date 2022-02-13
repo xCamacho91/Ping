@@ -1,0 +1,114 @@
+<script type='text/javascript'>
+    function writeSelectedRadioBtn(clicked_id){  // recebe no argumento o id da radio button selecionada e coloca-o no value do input hidden
+        document.getElementById("selectedOption").value = clicked_id
+    }
+
+    function calculaPercentagem(votos, element_id, totalVotos){
+        var percentagem = (votos*100)/totalVotos
+
+        document.getElementById(element_id).style.width = percentagem + "%"
+        document.getElementById(element_id).innerText =  (percentagem).toFixed(2) + "%"
+
+        if (votos == 0) {
+            document.getElementById(element_id).style.padding = 0   // necessário pq a barra ficava um pouco preenchida mesmo a 0%
+            document.getElementById(element_id).style.width = 0  // necessário para que a barra não fique completamente preenchida quando ainda não existem votos
+            document.getElementById(element_id).innerText =  0.00 + "%"
+        }
+
+    }
+
+    function showNewPoll() {
+        var x = document.getElementById("newPoll");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    //https://www.w3schools.com/howto/howto_js_countdown.asp
+    function timer(data_fecho){
+        // Set the date we're counting down to
+        var countDownDate = new Date(data_fecho).getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in an element with id="demo"
+            document.getElementById("tempo").innerHTML = "Votação acaba em: <br> <h4>" + days + "d " + hours + "h " + minutes + "m " + seconds + "s </h4>";
+
+            // If the count down is over, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("tempo").innerHTML = "Votação expirada";
+                document.getElementById("votar_btn").disabled = true
+
+                var radios = document.getElementsByName("votos")
+                for (var i = 0, r=radios, l=r.length; i < l;  i++){ // coloca os radio buttons desativadas
+                    r[i].disabled = true;
+                }
+            }
+        }, 1000);
+    }
+
+</script>
+
+
+
+<% if (locals.votacao) { %>  <!-- se houver alguma votação na conversa -->
+
+
+
+<div class="dropdown" id="poll_dropdown">
+    <a class="btn btn-warning" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Participar na votação
+    </a>
+    <!-- CONTEUDO DA VOTAÇÃO-->
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+        <div class="card">
+            <div class="card-header" style="text-align: center"> <%= votacao[0].title %> </div>
+            <div class="card-body">
+
+                <script>timer('<%= votacao[0].data_fecho  %>')</script>
+                <p class="text-center mt-4 " id="tempo"></p>
+
+                <form style="padding: 10px; width: 300px" action="/app/menssage/votar/<%= locals.id %>" method="post" enctype="multipart/form-data" >
+
+                    <% for(var i=0; i<votacao[0].respostas.length; ++i){ %>
+                    <div>
+                        <input type="radio" id="<%= votacao[0].respostas[i].id_campo%>" name="votos" onclick="writeSelectedRadioBtn(this.id)" value="1">
+                        <label for=""><%= votacao[0].respostas[i].opcao  %></label>  <label><%= votacao[0].respostas[i].votos.length  %> Votos</label><br>
+
+                        <div class="w3-light-grey w3-round">
+                            <div class="w3-container w3-round w3-blue" id="bar_<%= votacao[0].respostas[i].id_campo %>"></div>
+                            <script> calculaPercentagem('<%= votacao[0].respostas[i].votos.length  %>','bar_<%= votacao[0].respostas[i].id_campo %>','<%= votacao[0].totalVotos  %>') </script>
+                            <!-- executa a função calculaPercentagem em cada itereção do ciclo for -->
+                        </div>
+                        <br>
+
+                    </div>
+                    <% } %>
+                    <input type="hidden" name="poll_id" id="poll_id" value="<%= votacao[0]._id  %>">  <!-- poll_id para ser usado na função que faz inserir um voto -->
+                    <input type="hidden" name="selectedOption" id="selectedOption">  <!-- valor deste elemento usado na função vote -->
+                    <button type="submit" class="btn btn-success btn-block" id="votar_btn">Votar</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<% } %>

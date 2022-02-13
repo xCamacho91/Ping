@@ -1,0 +1,16 @@
+
+<% for(var i=0; i<conv.length; ++i){ %>
+
+    <li class="person" data-chat="person1">
+        <a href="/app/menssage/<%= conv[i]._id %>">
+            <div class="user">
+                <img src="https://www.bootdey.com/img/Content/avatar/avatar1.png" alt="Retail Admin">
+                <span class="status <%= conv[i].status %>"></span>
+            </div>
+            <p class="name-time">
+                <span class="name"><%= conv[i].nome  %></span>
+                <span class="time"><%= conv[i].status %></span>
+            </p>
+        </a>
+    </li>
+<% } %>

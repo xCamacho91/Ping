@@ -1,0 +1,90 @@
+<html>
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-4 col-12">
+
+            <div class="jumbotron">
+                <div class="row" style="margin-top:-30px;">
+                    <button class="btn btn-warning col-2" onclick="goBack()"><i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i></button>
+                    <a href="/app/porfile" class="btn btn-info col-md-6" alt="Perfil"><i class="fa fa-user fa-2x" aria-hidden="true"></i></a>
+                    <!--<a href="" class="btn btn-warning col-4" alt="Adicionar Contacto"><i class="fa fa-user-plus fa-2x" aria-hidden="true"></i></a>-->
+                    <div class="dropdown col-md-4">
+                        <a class="btn btn-success" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-plus fa-1x" aria-hidden="true"></i> <i class="fa fa-comments fa-2x" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <form style="padding: 20px; width: 300px" action="/app/criarConversa" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nome</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" name="nome" aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="img">Imagem</label>
+                                    <input type="file" class="form-control" id="img" name="img" aria-describedby="emailHelp" required>
+                                </div>
+                                <div class="form-group" style="padding: 20px;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" value="Privada" id="inlineRadio1" value="option1" required>
+                                        <label class="form-check-label" for="inlineRadio1">Privada</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" value="Publica" id="inlineRadio2" value="option2" required>
+                                        <label class="form-check-label" for="inlineRadio2">Publica</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" value="Reservada" id="inlineRadio3" value="option3" required>
+                                        <label class="form-check-label" for="inlineRadio3">Reservada</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success">Criar</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="users-container">
+                    <div class="chat-search-box">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="users">
+
+                        <%- include('./partials/conversas') %>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-12">
+
+            <!-- CONTEUDO PARA CRIAÇÃO DE VOTAÇÃO-->
+            <%- include('./partials/polls/newPollContent') %>
+
+            <div class="jumbotron">
+                <% if (locals.id) {%>
+                    <%- include('./partials/mensageContent') %>
+                <%}else {%>
+                    <%- include('./partials/mensageEmpty') %>
+                <%}%>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
